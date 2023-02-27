@@ -1,0 +1,127 @@
+{block content}
+
+<div class="row">
+	<div class="col s6">
+		<a class="waves-effect waves-light btn modal-trigger blue accent-2" href="#modalCreate"><i class="material-icons left">add</i>Přidat značku</a>
+		<h1 n:block="title" class="hide">Značky</h1>
+	</div>
+	<div class="col s6">
+		<!-- Dropdown Trigger -->
+		<a class='dropdown-trigger btn right' href='#' data-target='dropdownPostsPerPage'>Počet příspěvků na stránku</a>
+
+		<!-- Dropdown Structure -->
+		<ul id='dropdownPostsPerPage' class='dropdown-content'>
+			<li><a n:href="Brand:all $page, 4, $order">4</a></li>
+			<li><a n:href="Brand:all $page, 5, $order">5</a></li>
+			<li><a n:href="Brand:all $page, 10, $order">10</a></li>
+			<li><a n:href="Brand:all $page, 20, $order">20</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col s12">
+		<table class="responsive-table highlight" id="brand-table">
+			<thead class="grey lighten-3 grey-text">
+				<tr>
+					<td class="left-align">
+						Název
+						<a n:href="Brand:all $page, $itemsPerPage, 'asc'"><i class="material-icons grey-text">arrow_upward</i></a>
+						<a n:href="Brand:all $page, $itemsPerPage, 'desc'"><i class="material-icons grey-text">arrow_downward</i></a>
+						<a n:href="Brand:all $page, $itemsPerPage, null"><i class="material-icons grey-text">close</i></a>
+					</td>
+					<td class="right-align">Akce</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr n:foreach="$brands as $brand">
+					<td class="left-align">{$brand->name}</td>
+					<td class="right-align">
+						<!--<a n:href="delete $brand->id, $page, $itemsPerPage, $order" class="grey-text text-lighten-2">Smazat</a>-->
+						<a class="grey-text text-lighten-2 modal-trigger" href="#modalDelete" data-id="{$brand->id}" data-name="{$brand->name}">Smazataaa</a>
+						<a class="grey-text text-lighten-2 modal-trigger" href="#modalEdit" data-id="{$brand->id}" data-name="{$brand->name}">Editovat</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<ul class="pagination right-align">
+		    {if !$paginator->isFirst()}
+		    	<li class="waves-effect"><a n:href="all, $paginator->getPage() -1, $itemsPerPage, $order"><i class="material-icons">chevron_left</i></a></li>
+				<li class="waves-effect"><a n:href="all, 1, $itemsPerPage, $order">1</a></li>
+			{/if}
+
+			{if $paginator->getPage() > 6}
+				<li class="three-dots">...&nbsp;&nbsp;</li>
+			{/if}
+
+			{for $i = ($paginator->getPage() > 6 ? $paginator->getPage() - 4 : 2); $i < $paginator->getPage(); $i++}
+				<li class="waves-effect"><a n:href="all, $i, $itemsPerPage, $order">{$i}</a></li>
+			{/for}
+
+			<li class="active"><a href="#!">{$paginator->getPage()}</a></li>
+
+			{for $i = $paginator->getPage() + 1 ; $i < ($paginator->getPage() < $paginator->getPageCount() - 4 ? $paginator->getPage() + 5 : $paginator->getPageCount()); $i++}
+				<li class="waves-effect"><a n:href="all, $i, $itemsPerPage, $order">{$i}</a></li>
+			{/for}
+
+			{if $paginator->getPage() < $paginator->getPageCount() - 5}
+				<li class="three-dots">...&nbsp;&nbsp;</li>
+			{/if}
+
+			{if !$paginator->isLast()}
+				<li class="waves-effect"><a n:href="all, $paginator->getPageCount(), $itemsPerPage, $order">{$paginator->getPageCount()}</a></li>
+				<li class="waves-effect"><a n:href="all, $paginator->getPage() + 1, $itemsPerPage, $order"><i class="material-icons">chevron_right</i></a></li>
+			{/if}
+	  	</ul>
+	</div>
+</div>
+
+<!-- Modal Structure -->
+<div id="modalCreate" class="modal">
+   	<div class="modal-content">
+   		<h4>Nová značka</h4>
+
+   		{control brandForm}
+    </div>
+</div>
+
+<div id="modalEdit" class="modal">
+   	<div class="modal-content">
+   		<h4>Upravit značku</h4>
+
+   		{control brandForm}
+    </div>
+</div>
+
+<div id="modalDelete" class="modal">
+   	<div class="modal-content">
+   		<h4>Odstranit značku</h4>
+   		<h5>Opravdu chcete odstranit tuto značku? Tuto akci nelze vrátit zpět.</h5>
+   		<a n:href="delete $brand->id, $page, $itemsPerPage, $order" class="waves-effect waves-light btn-large red darken-4">Ano</a>
+   		<a class="waves-effect waves-light btn-large" onclick="$('#modalDelete').modal().close();">Ne</a>
+    </div>
+</div>
+{/block}
+
+{block customScripts}
+<script>
+  	$(document).ready(function()
+  	{
+    	$('#modalCreate').modal();
+
+    	$('#modalDelete').modal();
+
+    	$('#modalEdit').modal(
+    	{
+    		onOpenEnd: function(modal, trigger)
+    		{
+        		$(modal).find('input[name="name"]').val($(trigger).data('name'));
+        		$(modal).find('input[name="brandId"]').val($(trigger).data('id'));
+		    }
+		});
+
+		$('.dropdown-trigger').dropdown();
+  	});
+</script>
+{/block}

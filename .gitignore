@@ -1,0 +1,4 @@
+config/local.neon
+sftp-config.json
+sftp-config.json.old
+vendor

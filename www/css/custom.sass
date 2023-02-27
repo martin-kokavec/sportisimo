@@ -1,0 +1,64 @@
+$primary-color: #448AFF
+
+nav
+	&.navbar
+		padding: 0 20px
+
+	.brand-logo
+		font-size: 18px
+
+.container
+	width: 100%
+	margin: 10px 20px
+	padding: 20px 10px
+
+table
+	&#brand-table
+		border-width: 0px
+		border-left-width: 1px
+		border-right-width: 1px
+		border-top-width: 1px
+		border-style: solid
+		border-collapse: separate
+		border-color: lightgrey
+
+		td
+			border-width: 0px
+			border-bottom-width: 1px
+			border-style: solid
+			border-color: lightgrey
+
+		thead
+			td
+				font-weight: 700
+
+			i
+				vertical-align: bottom
+
+		tbody
+			td
+				font-weight: 400
+
+.flash
+	&.success
+		background-color: rgb(97, 250, 97)
+		font-weight: 500
+		padding: 20px
+		margin-bottom: 20px
+		width: 50%
+		margin-left: auto
+		margin-right: auto
+		text-align: center
+
+.pagination
+	li
+		font-weight: 500
+		&.active
+			background-color: white
+			border-bottom: $primary-color 2px solid
+			a
+				text-decoration: underline
+				text-decoration-color: $primary-color
+				color: black
+	.three-dots
+		margin-top: 5px
